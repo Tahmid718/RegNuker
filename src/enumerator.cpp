@@ -1,3 +1,5 @@
+// October 30, 2024 | 1:35 AM
+
 #include <windows.h>
 #include <iostream>
 
@@ -7,9 +9,9 @@ void RegistryEnum(HKEY Hive, const std::wstring& subkey, const std::wstring &ful
 void CHANGE(HKEY Hive, const std::wstring& subKey, const std::wstring &value, DWORD nValue, DWORD Type__);
 
 /*
-    Change it to desired value,
-    its in decimal. WinAPI will convert it into hexdecimal.
-    putting 69 here actually gonna set value 0x45
+    Change it to the desired value,
+    it's in decimal. WinAPI will convert it into hexadecimal.
+    putting 69 here actually gonna set the value 0x45
 */
 
 DWORD Change_To = 69;
@@ -121,3 +123,6 @@ void CHANGE(HKEY Hive, const std::wstring& subKey, const std::wstring &value, DW
         }
     }
 }
+
+// END
+// November 3, 2024 | 7:12 PM
