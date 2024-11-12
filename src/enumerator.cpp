@@ -102,7 +102,6 @@ void RegistryEnum(HKEY Hive, const std::wstring& subkey, const std::wstring& ful
            if(RegOpenKeyExW(Hive, key_final_path.c_str(), 0, KEY_SET_VALUE, &Key) == ERROR_SUCCESS)
            {
                 LPCWSTR wvalue = Value_Name;
-                std::wcout << key_final_path <<  "\\" << Value_Name << std::endl << std::endl;
 
                 if (Value_Type == REG_DWORD)
                 {
