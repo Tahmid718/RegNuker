@@ -1,4 +1,4 @@
-#include "enumerator.h"
+#include "src/enumerator.h"
 
 #include <windows.h>
 #include <iostream>
@@ -18,14 +18,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lcmdLine,
         pass;
     }
     
-    int MGW = MessageBoxW(
-        NULL,
-        message,
-        L" Warning",
-        0x00000004 | 0x00000030
-    );
+    int MGW = MessageBoxW(NULL, message, L" Warning", MB_YESNO|MB_ICONWARNING);
 
-    if (MGW == 6)
+    DWORD Change_To = 69;
+
+    if (MGW == IDYES)
     {
         Registry_Enum RE_Obj;
         RE_Obj.Panel_();
