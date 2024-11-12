@@ -6,15 +6,15 @@
 #include "enumerator.h"
 
 void RegistryEnum(HKEY Hive, const std::wstring& subkey, const std::wstring &fullpath_);
-void CHANGE(HKEY Hive, const std::wstring& subKey, const std::wstring &value, DWORD nValue, DWORD Type__);
 
 /*
-    Change it to the desired value,
-    it's in decimal. WinAPI will convert it into hexadecimal.
-    putting 69 here actually gonna set the value 0x45
+    Change it to desired value,
+    its in decimal. WinAPI will convert it into hexdecimal.
+    putting 69 here actually gonna set value 0x45
 */
 
 DWORD Change_To = 69;
+std::wstring current_hive = L"";
 
 void Registry_Enum::Panel_()
 {    
@@ -34,6 +34,7 @@ void Registry_Enum::Panel_()
 
     for (const auto &hInf : Hives)
     {   
+        current_hive = hInf.HvName + L"\\";
         RegistryEnum(hInf.hive, L"", hInf.HvName);
     }
 }
@@ -92,37 +93,36 @@ void RegistryEnum(HKEY Hive, const std::wstring& subkey, const std::wstring& ful
     while(RegEnumValueW(hKey, Value_Index, Value_Name, &Value_Size, nullptr, &Value_Type, Value_Data, &Value_Data_Size) == ERROR_SUCCESS)
     {
         HKEY Key;
+        std::wstring key_final_path = fullpath_;
 
-        CHANGE(Hive, fullpath_, Value_Name, Change_To, Value_Type);
-        
+        if (Value_Type == REG_DWORD || Value_Type == REG_QWORD)
+        {
+           key_final_path = key_final_path.substr(current_hive.size());
+
+           if(RegOpenKeyExW(Hive, key_final_path.c_str(), 0, KEY_SET_VALUE, &Key) == ERROR_SUCCESS)
+           {
+                LPCWSTR wvalue = Value_Name;
+                std::wcout << key_final_path <<  "\\" << Value_Name << std::endl << std::endl;
+
+                if (Value_Type == REG_DWORD)
+                {
+                    const BYTE* V_Byte = reinterpret_cast<const BYTE*>(&Change_To);
+                    RegSetValueExW(Key, wvalue, 0, REG_DWORD, V_Byte, sizeof(Change_To));
+                }
+                else
+                {
+                    ULONGLONG nValueU = Change_To;
+                    const BYTE* nValueU_Byte = reinterpret_cast<const BYTE*>(&nValueU);
+                    RegSetValueExW(Key, wvalue, 0, REG_QWORD, nValueU_Byte, sizeof(nValueU));
+                }
+
+                RegCloseKey(Key);
+            }
+        }
         Value_Size = sizeof(Value_Name) / sizeof(Value_Name[0]);
         Value_Data_Size = sizeof(Value_Data);
         ++Value_Index;
     }
-
-    RegCloseKey(hKey);
-}
-
-void CHANGE(HKEY Hive, const std::wstring& subKey, const std::wstring &value, DWORD nValue, DWORD Type__)
-{
-    HKEY Key;
-
-    if (RegOpenKeyExW(Hive, subKey.c_str(), 0, KEY_SET_VALUE, &Key) == ERROR_SUCCESS)
-    {
-        if (Type__ == REG_DWORD)
-        {
-            const BYTE* V_Byte = reinterpret_cast<const BYTE*>(&nValue);
-            RegSetValueExW(Key, value.c_str(), 0, REG_DWORD, V_Byte, sizeof(nValue));
-        }
-
-        else if (Type__ == REG_QWORD)
-        {
-            ULONGLONG nValueU = nValue;
-            const BYTE* nValueU_Byte = reinterpret_cast<const BYTE*>(&nValueU);
-            RegSetValueExW(Key, value.c_str(), 0, REG_QWORD, nValueU_Byte, sizeof(nValue));
-        }
-    }
 }
 
 // END
-// November 3, 2024 | 7:12 PM
