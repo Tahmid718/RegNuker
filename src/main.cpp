@@ -1,4 +1,4 @@
-#include "src/enumerator.h"
+#include "enumerator.h"
 
 #include <windows.h>
 #include <iostream>
