@@ -20,8 +20,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lcmdLine,
     
     int MGW = MessageBoxW(NULL, message, L" Warning", MB_YESNO|MB_ICONWARNING);
 
-    DWORD Change_To = 69;
-
     if (MGW == IDYES)
     {
         Registry_Enum RE_Obj;
