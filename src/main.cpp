@@ -7,7 +7,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lcmdLine, int ncmdShow)
 {
-    LPCWSTR message = L"Warning. This very destructive script can cause devastating damage to your PC. This program can make your PC unstable to use or even unable to boot up, also makes it hard to fix the issue. If you still want to run, click yes. Or press no and nothing ever gonna happen.";
+    LPCWSTR message = L"Warning. This very destructive script can cause devastating damage to your PC. This program can make your PC unstable to use or even unable to boot up, also makes it hard to fix the issue. If you still want to run, click yes. Or press no and nothing ever happens.";
 
     try
     {
